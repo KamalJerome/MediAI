@@ -1,0 +1,56 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Project specific — runtime data (chats, embeddings, uploads); created by the app
+data/
+
+# Temp uploads / downloads
+temp_*
+*.pdf
+
+# Local samples & large binaries (remove these lines if you intend to track them)
+prescription.*
+pediatric.png
+*.pptx
+
+# Logs
+logs/
+*.log
+
+# Dependencies
+.pip/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build
+build/
+dist/
+*.egg-info/
