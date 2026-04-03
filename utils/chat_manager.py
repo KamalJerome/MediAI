@@ -104,6 +104,8 @@ class ChatManager:
                 "content": content,
                 "timestamp": datetime.now().isoformat()
             }
+            if documents_used:
+                message["documents_used"] = list(documents_used)
             
             chat_data["messages"].append(message)
             

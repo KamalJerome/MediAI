@@ -351,12 +351,13 @@ def display_chat():
                     st.session_state.current_chat_id,
                     "assistant",
                     full_response,
-                    documents_used=st.session_state.rag_manager.list_documents() if st.session_state.rag_manager else []
+                    documents_used=sources
                 )
                 st.session_state.current_chat_messages.append({
                     "role": "assistant",
                     "content": full_response,
-                    "timestamp": datetime.now().isoformat()
+                    "timestamp": datetime.now().isoformat(),
+                    "documents_used": sources
                 })
             except Exception as e:
                 st.error(f"Error processing request: {str(e)}")

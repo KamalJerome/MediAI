@@ -7,11 +7,15 @@ import json
 import pickle
 from typing import List, Tuple, Optional, Generator, Dict
 from datetime import datetime
+from openai import OpenAI
+from langchain_core.documents import Document
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_openai import OpenAIEmbeddings
+from langchain_community.vectorstores import FAISS
 
 # Direct OpenAI client (avoids LangChain prompts/chains and "langchain.prompts" errors)
 def _openai_chat(prompt: str, model: str = "gpt-3.5-turbo") -> str:
     """Call OpenAI Chat Completions API directly. No LangChain dependency."""
-    from openai import OpenAI
     client = OpenAI()
     response = client.chat.completions.create(
         model=model,
@@ -68,71 +72,6 @@ def _retrieval_query_from_history(
     combined = "\n".join(parts)
     return combined if len(combined) <= max_chars else combined[-max_chars:]
 
-# LangChain Document for metadata (citations)
-try:
-    from langchain.schema import Document
-except ImportError:
-    try:
-        from langchain_core.documents import Document
-    except ImportError:
-        Document = None
-
-# LangChain imports - support multiple package versions
-try:
-    from langchain.text_splitter import RecursiveCharacterTextSplitter
-except ImportError:
-    try:
-        from langchain_text_splitters import RecursiveCharacterTextSplitter
-    except ImportError:
-        RecursiveCharacterTextSplitter = None
-
-try:
-    from langchain.embeddings.openai import OpenAIEmbeddings
-except ImportError:
-    try:
-        from langchain.embeddings import OpenAIEmbeddings
-    except ImportError:
-        try:
-            from langchain_openai import OpenAIEmbeddings
-        except ImportError:
-            OpenAIEmbeddings = None
-
-try:
-    from langchain.vectorstores import FAISS
-except ImportError:
-    try:
-        from langchain_community.vectorstores import FAISS
-    except ImportError:
-        FAISS = None
-
-try:
-    from langchain.chains import RetrievalQA
-except ImportError:
-    try:
-        from langchain.chains.retrieval_qa.base import RetrievalQA
-    except ImportError:
-        try:
-            from langchain.chains.retrieval_qa import RetrievalQA
-        except ImportError:
-            RetrievalQA = None
-
-try:
-    from langchain.chat_models import ChatOpenAI
-except ImportError:
-    try:
-        from langchain_openai import ChatOpenAI
-    except ImportError:
-        ChatOpenAI = None
-
-try:
-    from langchain.llms.openai import OpenAI
-except ImportError:
-    try:
-        from langchain_openai import OpenAI
-    except ImportError:
-        OpenAI = None
-
-# Ensure required components are available (ChatOpenAI not required - we use direct OpenAI API for chat)
 def _check_imports():
     missing = []
     if RecursiveCharacterTextSplitter is None:
